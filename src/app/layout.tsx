@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   title: "Kristijan Federer",
   description: "Fullstack Software Developer",
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
+    icon: '/logo.svg',
+    shortcut: '/logo.svg',
+    apple: '/logo.svg',
   },
 };
 
