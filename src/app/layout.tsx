@@ -6,6 +6,11 @@ import { Navbar } from "@/components/global/navbar/Navbar";
 export const metadata: Metadata = {
   title: "Kristijan Federer",
   description: "Fullstack Software Developer",
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
