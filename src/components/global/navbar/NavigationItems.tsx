@@ -1,6 +1,6 @@
 import { NavbarProps } from '@/types/global';
-import Link from 'next/link';
 import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
+import Link from 'next/link';
 
 const iconMap: Record<string, JSX.Element> = {
   'Mail': <FiMail />,
@@ -19,13 +19,25 @@ const NavigationItems = ({ menuItems}: NavbarProps ) => {
   return (
     <div className='nav-icons flex gap-16 text-6xl'>
       {navigation?.map((item) => (
-        <Link
-          key={item.name}
-          href={item.href}
-          className='text-white'
-        >
-          {iconMap[item.name]}
-        </Link>
+        item.name === 'Mail' ? (
+          <Link
+            key={item.name}
+            href="/contact"
+            className='text-white'
+          >
+            {iconMap[item.name]}
+          </Link>
+        ) : (
+          <a
+            key={item.name}
+            href={item.href}
+            className='text-white'
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {iconMap[item.name]}
+          </a>
+        )
       ))}
     </div>
   )
