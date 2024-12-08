@@ -2,19 +2,33 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
+  if (!process.env.NODEMAILER_AUTH_USER || !process.env.NODEMAILER_AUTH_PASS) {
+    console.error('Missing email credentials');
+    return NextResponse.json(
+      { error: 'Email service not configured' },
+      { status: 500 }
+    );
+  }
+
   try {
     const { name, email, message } = await req.json();
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.NODEMAILER_AUTH_USER,
         pass: process.env.NODEMAILER_AUTH_PASS,
       },
     });
 
+    // Verify SMTP connection configuration
+    await transporter.verify();
+
     const mailOptions = {
-      from: email,
+      from: process.env.NODEMAILER_AUTH_USER, // Use your verified email as sender
+      replyTo: email, // Set reply-to as the form submitter's email
       to: 'federer.kristijan@gmail.com',
       subject: `New message from ${name}`,
       text: message,
@@ -31,6 +45,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
   } catch (error) {
     console.error('Error sending email:', error);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: 'Failed to send email', details: error.message },
+        { status: 500 }
+      );
+    } else {
+      return NextResponse.json(
+        { error: 'Failed to send email', details: 'Unknown error' },
+        { status: 500 }
+      );
+    }
   }
 }
