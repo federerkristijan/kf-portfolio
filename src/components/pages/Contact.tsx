@@ -52,7 +52,7 @@ export default function Contact() {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-black rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Contact Me</h2>
+      <h2 className="text-2xl font-bold mb-6 text-white">Contact Me</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-white">
