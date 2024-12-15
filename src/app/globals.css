@@ -428,7 +428,7 @@ button {
 /* Media Queries */
 @media (max-width: 640px) {
   .moustache-d {
-    display: flex;
+    display: none;
   }
 
   /* .moustache {

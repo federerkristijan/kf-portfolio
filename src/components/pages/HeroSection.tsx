@@ -8,13 +8,27 @@ import Moustache from "@/assets/moustache.png";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { MobileHeroSection } from "./MobileHeroSection";
 
 export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
   const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  if (isMobile) {
+    return <MobileHeroSection title={title} subtitle={subtitle} />;
+  }
 
   const renderHeaderName = () => {
     const name1 = "Kristijan";
