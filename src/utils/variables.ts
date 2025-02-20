@@ -3,6 +3,8 @@ import Livepad from "@/assets/Livepad.png";
 import Inklusion from "@/assets/Inklusion.png";
 import DasaHink from "@/assets/DasaHink.png";
 import CannaSmokeHere from "@/assets/CannaSmokeHere.png";
+import WildGoatRide from "@/assets/WildGoatRide.png";
+import BubbleLogo from "@/assets/BubbleLogo.png";
 
 export const heroSection = {
   title: "Fullstack Developer",
@@ -74,6 +76,14 @@ export const projectsTitles = {
 };
 
 export const projectsVars: Project[] = [
+  {
+    title: 'Wild Goad Ride',
+    description:
+      'An interactive and responsive web app built with the Bubble no-code full-stack platform and integrated Google Analytics and Paypal paying option.',
+    image: WildGoatRide.src,
+    url: 'https://wildgoatride.com/',
+    icons: [BubbleLogo, 'SiGoogleanalytics']
+  },
   {
     title: 'Canna Smoke Here',
     description:
