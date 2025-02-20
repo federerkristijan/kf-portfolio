@@ -82,7 +82,7 @@ export const projectsVars: Project[] = [
       'An interactive and responsive web app built with the Bubble no-code full-stack platform and integrated Google Analytics and Paypal paying option.',
     image: WildGoatRide.src,
     url: 'https://wildgoatride.com/',
-    icons: [BubbleLogo, 'SiGoogleanalytics']
+    icons: [BubbleLogo.src, 'SiGoogleanalytics']
   },
   {
     title: 'Canna Smoke Here',
