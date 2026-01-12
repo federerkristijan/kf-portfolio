@@ -12,8 +12,6 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { name, email, message } = await req.json();
-
     const body: unknown = await req.json();
 
     const validation = validateContactFormPayload(body);
@@ -23,6 +21,8 @@ export async function POST(req: Request) {
         { status: validation.status }
       );
     }
+
+    const { name, email, message } = validation.data;
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
