@@ -1,11 +1,12 @@
-import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
+import { validateContactFormPayload } from "./guards";
 
 export async function POST(req: Request) {
   if (!process.env.NODEMAILER_AUTH_USER || !process.env.NODEMAILER_AUTH_PASS) {
-    console.error('Missing email credentials');
+    console.error("Missing email credentials");
     return NextResponse.json(
-      { error: 'Email service not configured' },
+      { error: "Email service not configured" },
       { status: 500 }
     );
   }
@@ -13,8 +14,18 @@ export async function POST(req: Request) {
   try {
     const { name, email, message } = await req.json();
 
+    const body: unknown = await req.json();
+
+    const validation = validateContactFormPayload(body);
+    if (!validation.ok) {
+      return NextResponse.json(
+        { error: validation.error },
+        { status: validation.status }
+      );
+    }
+
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true,
       auth: {
@@ -29,7 +40,7 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: process.env.NODEMAILER_AUTH_USER, // Use your verified email as sender
       replyTo: email, // Set reply-to as the form submitter's email
-      to: 'federer.kristijan@gmail.com',
+      to: "federer.kristijan@gmail.com",
       subject: `New message from ${name}`,
       text: message,
       html: `
@@ -42,17 +53,20 @@ export async function POST(req: Request) {
 
     await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
+    return NextResponse.json(
+      { message: "Email sent successfully" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email:", error);
     if (error instanceof Error) {
       return NextResponse.json(
-        { error: 'Failed to send email', details: error.message },
+        { error: "Failed to send email", details: error.message },
         { status: 500 }
       );
     } else {
       return NextResponse.json(
-        { error: 'Failed to send email', details: 'Unknown error' },
+        { error: "Failed to send email", details: "Unknown error" },
         { status: 500 }
       );
     }
