@@ -1,40 +1,44 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+    name: "",
+    email: "",
+    message: "",
+    website: "",
   });
   const [status, setStatus] = useState({
     loading: false,
-    error: '',
+    error: "",
     success: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus({ loading: true, error: '', success: false });
+    setStatus({ loading: true, error: "", success: false });
 
     try {
-      const response = await fetch('/api/sendEmail', {
-        method: 'POST',
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error('Failed to send message');
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error ?? "Failed to send message");
+      }
 
-      setStatus({ loading: false, error: '', success: true });
-      setFormData({ name: '', email: '', message: '' });
+      setStatus({ loading: false, error: "", success: true });
+      setFormData({ name: "", email: "", message: "", website: "" });
     } catch (error) {
       setStatus({
         loading: false,
-        error: 'Failed to send message. Please try again.',
+        error: "Failed to send message. Please try again.",
         success: false,
       });
     }
@@ -55,7 +59,22 @@ export default function Contact() {
       <h2 className="text-2xl font-bold mb-6 text-white">Contact Me</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-white">
+          <input
+            type="text"
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute left-[-10000px] top-auto w-px h-px overflow-hidden"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-white"
+          >
             Name
           </label>
           <input
@@ -69,7 +88,10 @@ export default function Contact() {
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-white">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-white"
+          >
             Email
           </label>
           <input
@@ -83,7 +105,10 @@ export default function Contact() {
           />
         </div>
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-white">
+          <label
+            htmlFor="message"
+            className="block text-sm font-medium text-white"
+          >
             Message
           </label>
           <textarea
@@ -101,13 +126,15 @@ export default function Contact() {
           disabled={status.loading}
           className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
         >
-          {status.loading ? 'Sending...' : 'Send Message'}
+          {status.loading ? "Sending..." : "Send Message"}
         </button>
         {status.error && (
           <p className="text-red-500 text-sm mt-2">{status.error}</p>
         )}
         {status.success && (
-          <p className="text-green-500 text-sm mt-2">Message sent successfully!</p>
+          <p className="text-green-500 text-sm mt-2">
+            Message sent successfully!
+          </p>
         )}
       </form>
     </div>
