@@ -1,12 +1,10 @@
 import { HeroSection } from "@/components/pages/HeroSection";
 import ContactSection from "@/components/pages/ContactSection";
-import { heroSection, aboutVars, skills } from "@/utils/variables";
+import { heroSection, aboutVars, skills, projectsVars } from "@/utils/variables";
 import AboutPage from "@/components/pages/AboutPage";
 import ProjectsGrid from "@/components/ui/ProjectsGrid";
 
 export default async function Page() {
-
-
   return (
     <>
         {/* Hero Section */}
@@ -24,7 +22,7 @@ export default async function Page() {
 
         {/* Projects Section */}
         <section id="projects">
-          <ProjectsGrid />
+          <ProjectsGrid projects={projectsVars} />
         </section>
 
         {/* Contact Section */}
