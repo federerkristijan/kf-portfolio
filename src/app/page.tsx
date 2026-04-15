@@ -1,6 +1,6 @@
 import { HeroSection } from "@/components/pages/HeroSection";
 import ContactSection from "@/components/pages/ContactSection";
-import { heroSection, aboutVars, projectsTitles, projectsVars, skills } from "@/utils/variables";
+import { heroSection, aboutVars, skills } from "@/utils/variables";
 import AboutPage from "@/components/pages/AboutPage";
 import ProjectsGrid from "@/components/ui/ProjectsGrid";
 
