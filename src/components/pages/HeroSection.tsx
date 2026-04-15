@@ -99,9 +99,6 @@ export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
           <Button href="/about">Discover a Talent</Button>
-          <Button className="button2" href="/projects">
-            See Projects
-          </Button>
         </div>
       </div>
       <div className="mt-8 lg:mt-0 lg:ml-8 hidden md:block w-full lg:w-1/2">
