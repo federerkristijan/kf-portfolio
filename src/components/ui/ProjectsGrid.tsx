@@ -1,45 +1,35 @@
 'use client';
 
-import React from 'react';
-import { FaGithub } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { Project } from '@/types/global';
+import { projectsVars } from '@/utils/variables';
 import Link from 'next/link';
-
-interface Project {
-  title: string;
-  technologies: string[];
-  githubUrl: string;
-}
+import * as ReactIcons from 'react-icons';
 
 interface ProjectsGridProps {
   projects: Project[];
 }
 
-export default function ProjectsGrid({ projects }: ProjectsGridProps) {
+const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects }) => {
+  const renderIcon = (iconName: string) => {
+    const IconComponent = (ReactIcons as any)[iconName];
+    return IconComponent ? <IconComponent key={iconName} /> : null;
+  };
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {projects.map((project, index) => (
-        <motion.div
-          key={index}
-          whileHover={{ scale: 1.05 }}
-          className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-        >
-          <h2 className="text-xl font-bold mb-2">{project.title}</h2>
-          <ul className="flex flex-wrap gap-2 mb-4">
-            {project.technologies.map((tech, idx) => (
-              <li key={idx} className="text-sm bg-gray-200 rounded-full px-3 py-1">
-                {tech}
-              </li>
-            ))}
-          </ul>
-          <Link href={project.githubUrl} passHref>
-            <a className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200">
-              <FaGithub className="mr-2" />
-              View on GitHub
-            </a>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {projects.map((project) => (
+        <div key={project.title} className="border p-4 rounded-md shadow-sm">
+          <h3 className="text-lg font-bold">{project.title}</h3>
+          <div className="flex gap-2 mt-2">
+            {project.icons.map((icon) => renderIcon(icon))}
+          </div>
+          <Link href={project.url} target="_blank" className="text-blue-500 mt-4 block">
+            View on GitHub
           </Link>
-        </motion.div>
+        </div>
       ))}
     </div>
   );
-}
+};
+
+export default ProjectsGrid;
