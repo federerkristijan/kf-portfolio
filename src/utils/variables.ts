@@ -1,21 +1,15 @@
-export interface Project {
-  id: number;
-  title: string;
-  icons: string[];
-  url: string;
-}
+export const siteConfig = {
+  title: "My Portfolio",
+  description: "Welcome to my personal website!",
+};
 
-export const projectsVars: Project[] = [
-  {
-    id: 1,
-    title: 'Portfolio Website',
-    icons: ['FiGithub'],
-    url: 'https://github.com/myusername/portfolio-website'
-  },
-  {
-    id: 2,
-    title: 'E-commerce Platform',
-    icons: ['FiGithub'],
-    url: 'https://github.com/myusername/ecommerce-platform'
-  }
-];
+export const aboutVars = {
+  bio: "I am a passionate developer with expertise in web technologies.",
+  skills: ["JavaScript", "TypeScript", "React", "Next.js"],
+};
+
+export const contactVars = {
+  email: "contact@example.com",
+  phone: "+1234567890",
+  address: "123 Developer Lane",
+};
