@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import { IconType } from "react-icons";
 import { StaticImageData } from "next/image";
+declare module "*.css";
 
 export interface AboutPagePayload {
   title: string;
