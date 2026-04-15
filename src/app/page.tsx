@@ -1,27 +1,38 @@
-'use client'
+'use client';
 
-import { FC } from 'react';
-import { heroSection, aboutVars, quote, projectsTitles } from '@/utils/variables';
-import ProjectsGrid from '@/components/ui/ProjectsGrid';
+import { motion } from 'framer-motion';
+import { FaUserCircle } from 'react-icons/fa';
 
-const HomePage: FC = () => {
+const HomePage: React.FC = () => {
   return (
-    <div className="container mx-auto px-4">
-      <header className="py-12">
-        <h1 className="text-4xl font-bold">{heroSection.title}</h1>
-        <p className="mt-4 text-xl">{heroSection.subtitle}</p>
+    <div className="min-h-screen bg-gray-50">
+      <header className="flex items-center justify-between p-4 shadow-md bg-white">
+        <h1 className="text-2xl font-bold">Welcome to My Website</h1>
+        <nav>
+          <ul className="flex space-x-4">
+            <li>
+              <a href="/about" className="text-blue-500 hover:underline">About</a>
+            </li>
+            <li>
+              <a href="/contact" className="text-blue-500 hover:underline">Contact</a>
+            </li>
+          </ul>
+        </nav>
       </header>
-      <section className="py-12">
-        <h2 className="text-3xl font-semibold">{aboutVars.title}</h2>
-        <p className="mt-2">{aboutVars.description}</p>
-      </section>
-      <section className="py-12">
-        <h2 className="text-3xl font-semibold">{projectsTitles.title}</h2>
-        <p className="mt-2">{projectsTitles.subtitle}</p>
-        <ProjectsGrid />
-      </section>
-      <footer className="py-8">
-        <p className="text-lg italic">"{quote}"</p>
+      
+      <main className="p-8">
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Hello There!</h2>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+            <p className="text-gray-700">
+              I'm a passionate developer with experience in building dynamic applications.
+            </p>
+          </motion.div>
+        </section>
+      </main>
+      
+      <footer className="p-4 bg-gray-200 text-center">
+        <FaUserCircle className="inline-block" /> Created by Your Name
       </footer>
     </div>
   );
