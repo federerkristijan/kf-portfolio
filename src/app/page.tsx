@@ -1,16 +1,33 @@
-"use client";
+import { HeroSection } from "@/components/pages/HeroSection";
+import ContactSection from "@/components/pages/ContactSection";
+import { heroSection, aboutVars, projectsTitles, projectsVars, skills } from "@/utils/variables";
+import AboutPage from "@/components/pages/AboutPage";
+
+export default async function Page() {
 
 import { HeroSection } from "@/components/pages/HeroSection";
 
 const Page = () => {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen py-8 px-4">
-      <HeroSection 
-        title="Welcome to My Portfolio"
-        subtitle="I'm Kristijan Federer, a passionate software developer."
-        image="/path/to/image"
-      />
-    </main>
+    <>
+        {/* Hero Section */}
+        <section>
+          <HeroSection
+            title={heroSection?.title || ""}
+            subtitle={heroSection?.subtitle || "Fullstack Developer"}
+          />
+        </section>
+
+        {/* About Section */}
+        <section>
+          <AboutPage title={aboutVars.title} description={aboutVars.description} skills={skills} />
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact">
+          <ContactSection />
+        </section>
+    </>
   );
 };
 
