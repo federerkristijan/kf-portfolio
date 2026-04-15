@@ -5,7 +5,9 @@ import AboutPage from "@/components/pages/AboutPage";
 
 export default async function Page() {
 
+import { HeroSection } from "@/components/pages/HeroSection";
 
+const Page = () => {
   return (
     <>
         {/* Hero Section */}
@@ -27,4 +29,6 @@ export default async function Page() {
         </section>
     </>
   );
-}
+};
+
+export default Page;
