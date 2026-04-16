@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "infisical run --env=dev -- next dev",
-    "build": "infisical run --env=prod -- next build",
-    "start": "infisical run --env=prod -- next start",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
