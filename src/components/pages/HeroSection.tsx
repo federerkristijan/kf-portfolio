@@ -1,14 +1,93 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { FaArrowDown } from 'react-icons/fa';
+import { HeroSectionPayload } from "@/types/global";
+import Image from "next/image";
+import Foto from "@/assets/CV Foto Glasses 1 - Edited 1.png";
+import { Button } from "@/components/ui/Button";
+import Moustache from "@/assets/moustache.png";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import MobileHeroSection from "./MobileHeroSection";
 
-interface HeroSectionProps {
-  title: string;
-  subtitle: string;
-}
+export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
+  const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-const HeroSection: React.FC<HeroSectionProps> = ({ title, subtitle }) => {
+  useEffect(() => {
+    setIsMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return <MobileHeroSection title={title} subtitle={subtitle} />;
+  }
+
+  const renderHeaderName = () => {
+    const name1 = "Kristijan";
+    const name2 = "Fe";
+    const name3 = "d";
+    const name4 = "erer";
+
+    return (
+      <div className="name-wrapper relative flex items-end gap-8 sm:flex-row flex-col">
+        <span className="text-4xl sm:text-5xl md:text-6xl font-bold">
+          {name1}
+        </span>
+
+        <div className="moustache-federer-wrapper flex items-end justify-center">
+          <span className="text-4xl sm:text-5xl md:text-6xl font-bold">
+            {name2}
+          </span>
+          <div className="moustache-d relative flex flex-col items-center">
+            {isMounted && (
+              <motion.div
+                animate={{
+                  y: [-5, 0, -5],
+                  rotate: [-5, 0, 5, 0, -5],
+                }}
+                transition={{
+                  y: {
+                    duration: 2,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                  },
+                  rotate: {
+                    duration: 3,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                  },
+                }}
+              >
+                <Image
+                  src={Moustache}
+                  alt="Moustache Animation"
+                  width={80}
+                  height={70}
+                  className="moustache object-contain sm:w-10 sm:h-5 relative left-2"
+                  priority
+                />
+              </motion.div>
+            )}
+            <span className="relative z-10 text-4xl sm:text-5xl md:text-6xl font-bold">
+              {name3}
+            </span>
+          </div>
+          <span className="text-4xl sm:text-5xl md:text-6xl font-bold">
+            {name4}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-[calc(100vh-5rem)] flex flex-col lg:flex-row items-center justify-center px-4 sm:px-8 lg:px-16 py-8 lg:py-0">
       <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-1/2 space-y-4">
