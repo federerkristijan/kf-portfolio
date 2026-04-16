@@ -3,7 +3,7 @@ import Image from "next/image";
 import Foto from "@/assets/CV Foto Glasses 1 - Edited 1.png";
 import { aboutVars, quote } from "@/utils/variables";
 
-export default function AboutPage({ image, skills }: AboutPagePayload) {
+export default function AboutPage({ image, skills }: Partial<AboutPagePayload>) {
   return (
     <div className="about-wrapper">
       <h1 className="about-title">{aboutVars.title}</h1>

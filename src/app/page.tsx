@@ -1,34 +1,24 @@
-import { HeroSection } from "@/components/pages/HeroSection";
+import HeroSection from "@/components/pages/HeroSection";
 import ContactSection from "@/components/pages/ContactSection";
-import { heroSection, aboutVars, skills } from "@/utils/variables";
 import AboutPage from "@/components/pages/AboutPage";
+import { getContact } from "@/db/queries/contact";
 
 export default async function Page() {
+  const contact = await getContact();
 
-import { HeroSection } from "@/components/pages/HeroSection";
-
-const Page = () => {
   return (
     <>
-        {/* Hero Section */}
-        <section>
-          <HeroSection
-            title={heroSection?.title || ""}
-            subtitle={heroSection?.subtitle || "Fullstack Developer"}
-          />
-        </section>
+      <section>
+        <HeroSection title="" subtitle="Fullstack Developer" />
+      </section>
 
-        {/* About Section */}
-        <section>
-          <AboutPage title={aboutVars.title} description={aboutVars.description} skills={skills} />
-        </section>
+      <section>
+        <AboutPage />
+      </section>
 
-        {/* Contact Section */}
-        <section id="contact">
-          <ContactSection />
-        </section>
+      <section id="contact">
+        {contact && <ContactSection contact={contact} />}
+      </section>
     </>
   );
-};
-
-export default Page;
+}

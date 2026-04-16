@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
-import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import type { ContactData } from "@/db/queries/contact";
 
-const ContactSection = () => {
+type Props = {
+  contact: ContactData;
+};
+
+const ContactSection = ({ contact }: Props) => {
   return (
     <div className="contact-section mt-12 p-8 bg-gray-800 text-white rounded-xl shadow-lg">
       <h2 className="contact-title text-3xl font-semibold text-center mb-6">
@@ -12,6 +16,11 @@ const ContactSection = () => {
         I&apos;m always open to new opportunities and collaborations. Feel free to
         reach out through my social media channels.
       </p>
+      <div className="flex flex-col items-center gap-2 mb-6 text-sm">
+        <span>{contact.email}</span>
+        <span>{contact.phone}</span>
+        <span>{contact.address}</span>
+      </div>
       <div className="contact-icons">
         <Link
           href="https://www.linkedin.com/in/yourprofile"
@@ -34,7 +43,6 @@ const ContactSection = () => {
         >
           <FaTwitter size={20} />
         </Link>
-        {/* Add more social links as needed */}
       </div>
     </div>
   );
