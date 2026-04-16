@@ -1,6 +1,6 @@
 import { AboutPagePayload, AboutPageProps } from "@/types/global";
 import AboutPage from "@/components/pages/AboutPage";
-import { aboutVars, skills } from "@/utils/variables";
+import { aboutVars } from "@/utils/variables";
 
 export default async function About() {
   // Fetch data for the About page
@@ -12,7 +12,7 @@ export default async function About() {
       height: 200,
       width: 200,
     },
-    skills: skills,
+    skills: aboutVars.skills,
   };
 
   return (
