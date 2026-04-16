@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS contact (
 );
 
 INSERT INTO contact (email, phone, address)
-VALUES ('contact@example.com', '+1234567890', '123 Developer Lane');
+VALUES ('federer.kristijan@gmail.com', '+1234567890', 'Saalestraße 39b, 12055 Berlin');
