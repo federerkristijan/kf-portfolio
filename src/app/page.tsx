@@ -1,10 +1,12 @@
 import HeroSection from "@/components/pages/HeroSection";
 import ContactSection from "@/components/pages/ContactSection";
 import AboutPage from "@/components/pages/AboutPage";
+import BlogSection from "@/components/pages/BlogSection";
 import { getContact } from "@/db/queries/contact";
+import { getPosts } from "@/db/queries/blog";
 
 export default async function Page() {
-  const contact = await getContact();
+  const [contact, posts] = await Promise.all([getContact(), getPosts()]);
 
   return (
     <>
@@ -14,6 +16,10 @@ export default async function Page() {
 
       <section>
         <AboutPage />
+      </section>
+
+      <section id="blog">
+        <BlogSection posts={posts} />
       </section>
 
       <section id="contact">
