@@ -26,14 +26,15 @@ jobs:
           format: cyclonedx-json
           output-file: sbom.cdx.json
 
-      - name: Scan for vulnerabilities
-        uses: anchore/scan-action@3343887d815d7b07465f6fdcd395bd66508d486a # v3
-        with:
-          sbom: sbom.cdx.json
-          fail-build: true
-          severity-cutoff: high
-          output-format: json
-          output-file: grype.json
+      - name: Install grype
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Scan for vulnerabilities (table log)
+        run: grype sbom:sbom.cdx.json --by-cve --fail-on high -o table
+
+      - name: Scan for vulnerabilities (json report)
+        run: grype sbom:sbom.cdx.json --by-cve -o json > grype.json
+        if: always()
 
       - name: Install grant
         run: curl -sSfL https://raw.githubusercontent.com/anchore/grant/main/install.sh | sh -s -- -b /usr/local/bin
@@ -59,3 +60,4 @@ jobs:
             sbom.cdx.json
             grype.json
             grant.json
+
