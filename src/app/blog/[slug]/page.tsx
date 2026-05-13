@@ -1,13 +1,16 @@
+export const dynamic = "force-dynamic";
+
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { getPostBySlug } from "@/db/queries/blog";
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export default async function BlogPostPage({ params }: Props) {
-  const post = await getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
 
   if (!post) notFound();
 
