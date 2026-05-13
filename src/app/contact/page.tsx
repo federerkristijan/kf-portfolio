@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Contact from "@/components/pages/Contact";
 import ContactSection from "@/components/pages/ContactSection";
 import { getContact } from "@/db/queries/contact";
