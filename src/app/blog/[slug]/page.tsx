@@ -24,15 +24,21 @@ function extractHeadings(content: string) {
     });
 }
 
+function nodeText(node: React.ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(nodeText).join('');
+  if (node && typeof node === 'object' && 'props' in (node as object))
+    return nodeText((node as React.ReactElement).props.children);
+  return '';
+}
+
 const headingComponents = {
-  h2: ({ children }: { children?: React.ReactNode }) => {
-    const text = String(children);
-    return <h2 id={slugify(text)}>{children}</h2>;
-  },
-  h3: ({ children }: { children?: React.ReactNode }) => {
-    const text = String(children);
-    return <h3 id={slugify(text)}>{children}</h3>;
-  },
+  h2: ({ children }: { children?: React.ReactNode }) => (
+    <h2 id={slugify(nodeText(children))}>{children}</h2>
+  ),
+  h3: ({ children }: { children?: React.ReactNode }) => (
+    <h3 id={slugify(nodeText(children))}>{children}</h3>
+  ),
 };
 
 export default async function BlogPostPage({ params }: Props) {
