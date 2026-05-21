@@ -22,8 +22,20 @@ function isNumericOnly(value: string): boolean {
   return /^[0-9]+$/.test(value);
 }
 
+const BLOCKED_EMAIL_DOMAINS = new Set(
+  (process.env.BLOCKED_EMAIL_DOMAINS ?? "")
+    .split(",")
+    .map((d) => d.trim().toLowerCase())
+    .filter(Boolean)
+);
+
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+function isBlockedDomain(email: string): boolean {
+  const domain = email.split("@")[1]?.toLowerCase() ?? "";
+  return BLOCKED_EMAIL_DOMAINS.has(domain);
 }
 
 function lowEntropy(value: string): boolean {
@@ -83,6 +95,10 @@ export function validateContactFormPayload(body: unknown): ValidationResult {
 
   // Email sanity
   if (!isValidEmail(email)) {
+    return { ok: false, status: 400, error: "Invalid email address" };
+  }
+
+  if (isBlockedDomain(email)) {
     return { ok: false, status: 400, error: "Invalid email address" };
   }
 
