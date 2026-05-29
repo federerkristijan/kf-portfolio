@@ -1,14 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import HeroSection from "@/components/pages/HeroSection";
-import ContactSection from "@/components/pages/ContactSection";
 import AboutPage from "@/components/pages/AboutPage";
 import BlogSection from "@/components/pages/BlogSection";
-import { getContact } from "@/db/queries/contact";
 import { getPosts } from "@/db/queries/blog";
 
 export default async function Page() {
-  const [contact, posts] = await Promise.all([getContact(), getPosts()]);
+  const posts = await getPosts();
 
   return (
     <>
@@ -24,9 +22,6 @@ export default async function Page() {
         <BlogSection posts={posts} />
       </section>
 
-      <section id="contact">
-        {contact && <ContactSection contact={contact} />}
-      </section>
     </>
   );
 }

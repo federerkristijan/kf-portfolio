@@ -22,7 +22,33 @@ function isNumericOnly(value: string): boolean {
   return /^[0-9]+$/.test(value);
 }
 
-const BLOCKED_EMAIL_DOMAINS = new Set(
+// Known disposable / spam-only email domains. Env var adds extras.
+const HARDCODED_BLOCKED_DOMAINS = new Set([
+  "jmail.com",
+  "mailinator.com",
+  "guerrillamail.com",
+  "guerrillamailblock.com",
+  "10minutemail.com",
+  "throwam.com",
+  "trashmail.com",
+  "yopmail.com",
+  "sharklasers.com",
+  "grr.la",
+  "spam4.me",
+  "maildrop.cc",
+  "dispostable.com",
+  "discard.email",
+  "tempmail.com",
+  "temp-mail.org",
+  "fakeinbox.com",
+  "mailnull.com",
+  "spamgourmet.com",
+  "getairmail.com",
+  "filzmail.com",
+  "throwam.com",
+]);
+
+const ENV_BLOCKED_DOMAINS = new Set(
   (process.env.BLOCKED_EMAIL_DOMAINS ?? "")
     .split(",")
     .map((d) => d.trim().toLowerCase())
@@ -35,12 +61,32 @@ function isValidEmail(email: string): boolean {
 
 function isBlockedDomain(email: string): boolean {
   const domain = email.split("@")[1]?.toLowerCase() ?? "";
-  return BLOCKED_EMAIL_DOMAINS.has(domain);
+  return HARDCODED_BLOCKED_DOMAINS.has(domain) || ENV_BLOCKED_DOMAINS.has(domain);
 }
 
 function lowEntropy(value: string): boolean {
   const uniqueChars = new Set(value).size;
   return uniqueChars < 4;
+}
+
+// Patterns commonly used in prompt injection attacks.
+const PROMPT_INJECTION_PATTERNS: RegExp[] = [
+  /ignore\s+(previous|all|prior|the\s+above)\s+(instructions?|commands?|rules?|prompts?)/i,
+  /disregard\s+(previous|all|prior|the\s+above)/i,
+  /forget\s+(your\s+)?(previous\s+)?(instructions?|rules?|guidelines?|training)/i,
+  /you\s+are\s+now\s+(an?\s+)?(ai|assistant|bot|gpt|claude|llm)/i,
+  /act\s+as\s+(an?\s+)?(ai|assistant|bot|gpt|claude|llm|different|new)/i,
+  /new\s+(role|persona|instructions?)\s*:/i,
+  /^\s*system\s*:/im,
+  /^\s*<\s*system\s*>/im,
+  /from\s+now\s+on\s+(you|act|be|respond)/i,
+  /pretend\s+(you\s+are|to\s+be)\s+(an?\s+)?(ai|assistant|bot|gpt|claude)/i,
+  /jailbreak/i,
+  /DAN\b/,
+];
+
+function containsPromptInjection(value: string): boolean {
+  return PROMPT_INJECTION_PATTERNS.some((pattern) => pattern.test(value));
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -66,7 +112,7 @@ export function validateContactFormPayload(body: unknown): ValidationResult {
     return { ok: false, status: 400, error: "Invalid payload" };
   }
 
-  // Honeypot rule: must be empty
+  // Honeypot: must be empty
   if (website.trim() !== "") {
     return { ok: false, status: 400, error: "Bot detected" };
   }
@@ -110,6 +156,11 @@ export function validateContactFormPayload(body: unknown): ValidationResult {
   // Low-entropy spam payload
   if (lowEntropy(message)) {
     return { ok: false, status: 400, error: "Suspicious message content" };
+  }
+
+  // Prompt injection attempt
+  if (containsPromptInjection(name) || containsPromptInjection(message)) {
+    return { ok: false, status: 400, error: "Suspicious content detected" };
   }
 
   return { ok: true, data: { name, email, message, website } };
