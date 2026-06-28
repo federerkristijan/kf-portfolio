@@ -39,7 +39,7 @@ const BlogSection = ({ posts }: Props) => {
                 )}
                 <div className="flex items-center gap-4 text-sm text-gray-500 mt-auto">
                   {post.published_at && (
-                    <span>{new Date(post.published_at).toLocaleDateString()}</span>
+                    <span>{new Date(post.published_at).toLocaleDateString('en-GB')}</span>
                   )}
                   {post.reading_time_minutes && (
                     <span>{post.reading_time_minutes} min read</span>
