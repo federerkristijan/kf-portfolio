@@ -7,7 +7,9 @@ export type BlogPost = {
   excerpt: string | null;
   content: string;
   cover_image_url: string | null;
+  cover_image_caption: string | null;
   tags: string[] | null;
+  sources: { label: string; url: string }[] | null;
   reading_time_minutes: number | null;
   featured: boolean;
   views: number;

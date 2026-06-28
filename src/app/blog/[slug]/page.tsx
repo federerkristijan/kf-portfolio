@@ -52,11 +52,18 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
       {post.cover_image_url && (
-        <img
-          src={post.cover_image_url}
-          alt={post.title}
-          className="w-full h-64 object-cover rounded-xl mb-8"
-        />
+        <figure className="mb-8">
+          <img
+            src={post.cover_image_url}
+            alt={post.title}
+            className="w-full h-64 object-cover rounded-xl"
+          />
+          {post.cover_image_caption && (
+            <figcaption className="mt-3 text-sm text-gray-500 italic text-center">
+              {post.cover_image_caption}
+            </figcaption>
+          )}
+        </figure>
       )}
       <div className="flex flex-wrap gap-2 mb-4">
         {post.tags?.map((tag) => (
@@ -80,6 +87,25 @@ export default async function BlogPostPage({ params }: Props) {
         </article>
         <TableOfContents headings={headings} />
       </div>
+      {post.sources && post.sources.length > 0 && (
+        <section className="mt-12 border-t border-gray-700 pt-6">
+          <h2 className="text-xl font-semibold mb-4">Sources</h2>
+          <ul className="list-disc list-inside space-y-2 text-gray-400">
+            {post.sources.map((source) => (
+              <li key={source.url}>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-white underline underline-offset-2"
+                >
+                  {source.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

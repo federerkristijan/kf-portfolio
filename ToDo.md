@@ -19,3 +19,8 @@
 
 1. test CodeqQL, why it is failing
 2. strict prompts and python blocks against prompt injections
+
+## Blog formatting
+
+1. Add tags to the "github repositories as supply-chain entry points" post (currently has none)
+2. Fix blog index card date format — pass `'en-GB'` in `BlogSection.tsx` so cards show DD/MM/YYYY (currently US M/D/YYYY)

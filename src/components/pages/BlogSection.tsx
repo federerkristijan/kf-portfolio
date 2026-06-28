@@ -12,7 +12,7 @@ const BlogSection = ({ posts }: Props) => {
       {posts.length === 0 && (
         <p className="text-gray-400">No posts yet.</p>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,20rem),20rem))] justify-center gap-6">
         {posts.map((post) => (
           <Link key={post.id} href={`/blog/${post.slug}`} className="group block">
             <article className="border border-gray-700 rounded-xl overflow-hidden hover:border-gray-400 hover:shadow-lg transition-all h-full flex flex-col">
@@ -39,7 +39,7 @@ const BlogSection = ({ posts }: Props) => {
                 )}
                 <div className="flex items-center gap-4 text-sm text-gray-500 mt-auto">
                   {post.published_at && (
-                    <span>{new Date(post.published_at).toLocaleDateString()}</span>
+                    <span>{new Date(post.published_at).toLocaleDateString('en-GB')}</span>
                   )}
                   {post.reading_time_minutes && (
                     <span>{post.reading_time_minutes} min read</span>
