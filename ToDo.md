@@ -24,3 +24,4 @@
 
 1. Add tags to the "github repositories as supply-chain entry points" post (currently has none)
 2. Fix blog index card date format — pass `'en-GB'` in `BlogSection.tsx` so cards show DD/MM/YYYY (currently US M/D/YYYY)
+3. Create tag pages — a route (e.g. `/blog/tag/[tag]`) listing all articles with a given tag; link the tag chips to it

@@ -25,3 +25,7 @@
 * `CLAUDE.md` — shared on the remote (tracked). Version-controlled project config; keep it in sync across machines via git.
 * `todo.md` — shared on the remote (tracked). Worked on from two devices + the server, so it MUST stay synced via git.
 * `SESSION_CONTEXT.md` — local only; gitignored, never committed. It maps infra and records operational/incident notes that should not travel with the repo.
+
+## Blog conventions
+
+* An article can have a **maximum of 3 tags**.
