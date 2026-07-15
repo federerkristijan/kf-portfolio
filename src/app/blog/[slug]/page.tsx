@@ -56,7 +56,7 @@ export default async function BlogPostPage({ params }: Props) {
           <img
             src={post.cover_image_url}
             alt={post.title}
-            className="w-full h-64 object-cover rounded-xl"
+            className="w-full h-auto rounded-xl"
           />
           {post.cover_image_caption && (
             <figcaption className="mt-3 text-sm text-gray-500 italic text-center">
@@ -99,7 +99,7 @@ export default async function BlogPostPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white underline underline-offset-2"
                 >
-                  {source.label}
+                  {source.label ?? source.title ?? source.name ?? source.text ?? source.url}
                 </a>
               </li>
             ))}

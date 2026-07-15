@@ -11,7 +11,7 @@ export function Navbar() {
 
   return (
       <nav
-        className="flex flex-row z-0 items-center justify-between border-white w-full"
+        className="site-nav flex flex-row z-0 items-center justify-between border-white w-full"
       >
         <div>
           <Logo setMobileMenuOpen={setMobileMenuOpen} />

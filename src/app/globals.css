@@ -121,7 +121,7 @@ article li {
   font-weight: 400;
 }
 
-nav {
+.site-nav {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
