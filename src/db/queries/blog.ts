@@ -9,7 +9,9 @@ export type BlogPost = {
   cover_image_url: string | null;
   cover_image_caption: string | null;
   tags: string[] | null;
-  sources: { label: string; url: string }[] | null;
+  sources:
+    | { url: string; label?: string; title?: string; name?: string; text?: string }[]
+    | null;
   reading_time_minutes: number | null;
   featured: boolean;
   views: number;
