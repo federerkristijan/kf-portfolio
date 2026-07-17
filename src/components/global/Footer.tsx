@@ -12,7 +12,7 @@ const Footer = () => {
           Get in Touch
         </Link>
         <p className="text-center text-gray-400">
-          I&apos;m always open to new opportunities and collaborations.
+          Open to new opportunities and collaborations.
         </p>
         <div className="flex gap-6">
           <Link
