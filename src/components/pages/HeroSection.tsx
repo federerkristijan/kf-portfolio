@@ -94,11 +94,11 @@ export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
         <h1 className="w-full">{renderHeaderName()}</h1>
         <h2 className="text-xl sm:text-2xl md:text-3xl">{subtitle}</h2>
         <p className="text-base sm:text-lg md:text-xl max-w-md">
-          I write clean code to create quality applications with intuitive user
-          experience.
+          I build reliable AI systems, agent workflows, and full-stack
+          applications with Python, TypeScript, and React.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
-          <Button href="/about">Discover a Talent</Button>
+          <Button href="/about">Get in touch</Button>
         </div>
       </div>
       <div className="mt-8 lg:mt-0 lg:ml-8 hidden md:block w-full lg:w-1/2">
