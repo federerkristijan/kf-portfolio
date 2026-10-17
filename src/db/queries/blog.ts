@@ -1,4 +1,5 @@
 import pool from "@/lib/db";
+import { slugify } from "@/lib/slugify";
 
 export type BlogPost = {
   id: number;
@@ -35,4 +36,18 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     [slug]
   );
   return rows[0] ?? null;
+}
+
+// Tags are free text without their own slug column, so matching goes through
+// slugify — the same function that builds the tag links.
+export async function getPostsByTag(
+  tagSlug: string
+): Promise<{ tag: string; posts: BlogPost[] } | null> {
+  const posts = (await getPosts()).filter((post) =>
+    post.tags?.some((tag) => slugify(tag) === tagSlug)
+  );
+  if (posts.length === 0) return null;
+
+  const tag = posts[0].tags!.find((t) => slugify(t) === tagSlug)!;
+  return { tag, posts };
 }
