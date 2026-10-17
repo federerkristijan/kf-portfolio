@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { getPostBySlug } from "@/db/queries/blog";
@@ -63,11 +64,21 @@ export default async function BlogPostPage({ params }: Props) {
         </figure>
       )}
       <div className="flex flex-wrap gap-2 mb-4">
-        {post.tags?.map((tag) => (
-          <span key={tag} className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded">
-            {tag}
-          </span>
-        ))}
+        {post.tags?.map((tag) =>
+          slugify(tag) ? (
+            <Link
+              key={tag}
+              href={`/blog/tag/${slugify(tag)}`}
+              className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded hover:bg-gray-700 hover:text-white transition-colors"
+            >
+              {tag}
+            </Link>
+          ) : (
+            <span key={tag} className="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded">
+              {tag}
+            </span>
+          )
+        )}
       </div>
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
       <div className="flex items-center gap-4 text-sm text-gray-500 mb-10">
