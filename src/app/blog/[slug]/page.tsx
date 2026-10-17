@@ -4,14 +4,11 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { getPostBySlug } from "@/db/queries/blog";
 import { TableOfContents } from "@/components/blog/TableOfContents";
+import { slugify } from "@/lib/slugify";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
-
-function slugify(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
 
 function extractHeadings(content: string) {
   return content
