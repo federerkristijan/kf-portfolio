@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="max-w-4xl mx-auto flex flex-col items-center gap-6">
         <Link
           href="/contact"
-          className="text-3xl font-semibold hover:text-indigo-400 transition-colors"
+          className="text-3xl font-semibold text-white hover:text-indigo-400 transition-colors"
         >
           Get in Touch
         </Link>
@@ -20,7 +20,7 @@ const Footer = () => {
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
-            className="hover:text-indigo-400 transition-colors"
+            className="text-white hover:text-indigo-400 transition-colors"
           >
             <FaLinkedin size={24} />
           </Link>
@@ -29,7 +29,7 @@ const Footer = () => {
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
-            className="hover:text-indigo-400 transition-colors"
+            className="text-white hover:text-indigo-400 transition-colors"
           >
             <FaGithub size={24} />
           </Link>

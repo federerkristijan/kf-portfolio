@@ -12,6 +12,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const rafRef = useRef<number>(0);
 
+  // Recomputed on scroll/resize only, at most once per frame.
   useEffect(() => {
     const article = document.querySelector('article');
     if (!article) return;
@@ -38,11 +39,23 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
       }
 
       setActiveIndex(current);
-      rafRef.current = requestAnimationFrame(tick);
+      rafRef.current = 0;
     };
 
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
+    const schedule = () => {
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(tick);
+    };
+
+    // Capture phase: globals.css can make <body> the scroll container, whose
+    // scroll events never reach window.
+    schedule();
+    document.addEventListener('scroll', schedule, { passive: true, capture: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      document.removeEventListener('scroll', schedule, { capture: true });
+      window.removeEventListener('resize', schedule);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   if (headings.length === 0) return null;

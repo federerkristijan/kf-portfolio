@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
 
@@ -15,8 +15,11 @@ export function middleware(request: NextRequest) {
     `frame-ancestors 'none'`,
   ].join("; ");
 
+  // Next reads the nonce from the request's CSP header and adds it to its own
+  // scripts, which only works for dynamically rendered pages (see layout.tsx).
   const headers = new Headers(request.headers);
   headers.set("x-nonce", nonce);
+  headers.set("Content-Security-Policy", csp);
 
   const response = NextResponse.next({ request: { headers } });
 

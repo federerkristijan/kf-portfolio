@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    // Blog cover images live in Supabase storage.
+    remotePatterns: [
+      { protocol: "https", hostname: "aobucvrcozotzpcrdeof.supabase.co" },
+    ],
+  },
 };
 
 export default nextConfig;

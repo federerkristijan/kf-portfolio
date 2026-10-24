@@ -11,7 +11,7 @@ export default async function Page() {
   return (
     <>
       <section>
-        <HeroSection title="" subtitle="AI Systems Engineer" />
+        <HeroSection subtitle="AI Systems Engineer" />
       </section>
 
       <section>

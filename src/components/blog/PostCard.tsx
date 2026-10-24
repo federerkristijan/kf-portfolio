@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { BlogPost } from "@/db/queries/blog";
 
@@ -10,11 +11,13 @@ export const PostCard = ({ post }: Props) => {
     <Link href={`/blog/${post.slug}`} className="group block">
       <article className="border border-gray-700 rounded-xl overflow-hidden hover:border-gray-400 hover:shadow-lg transition-all h-full flex flex-col">
         {post.cover_image_url && (
-          <div className="aspect-video w-full overflow-hidden">
-            <img
+          <div className="relative aspect-video w-full overflow-hidden">
+            <Image
               src={post.cover_image_url}
               alt={post.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              fill
+              sizes="(max-width: 640px) 100vw, 20rem"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </div>
         )}
@@ -34,7 +37,7 @@ export const PostCard = ({ post }: Props) => {
             {post.published_at && (
               <span>{new Date(post.published_at).toLocaleDateString('en-GB')}</span>
             )}
-            {post.reading_time_minutes && (
+            {!!post.reading_time_minutes && (
               <span>{post.reading_time_minutes} min read</span>
             )}
           </div>

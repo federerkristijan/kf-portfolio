@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { validateContactFormPayload } from "./guards";
+import { hitRateLimit } from "@/db/queries/rateLimit";
 
-// In-memory rate limit: max 3 submissions per IP per 60 s.
-const ipRateLimit = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT_WINDOW_MS = 60_000;
+// Rate limit: max 3 submissions per IP per 60 s, stored in Postgres.
+const RATE_LIMIT_WINDOW_SECONDS = 60;
 const RATE_LIMIT_MAX = 3;
 
 function getClientIp(req: Request): string {
@@ -13,18 +13,6 @@ function getClientIp(req: Request): string {
     req.headers.get("x-real-ip") ??
     "unknown"
   );
-}
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = ipRateLimit.get(ip);
-  if (!entry || entry.resetAt < now) {
-    ipRateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return true;
-  }
-  if (entry.count >= RATE_LIMIT_MAX) return false;
-  entry.count++;
-  return true;
 }
 
 function escapeHtml(str: string): string {
@@ -45,15 +33,15 @@ export async function POST(req: Request) {
     );
   }
 
-  const ip = getClientIp(req);
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json(
-      { error: "Too many requests. Please wait a minute before trying again." },
-      { status: 429 }
-    );
-  }
-
   try {
+    const ip = getClientIp(req);
+    if (!(await hitRateLimit(ip, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_SECONDS))) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a minute before trying again." },
+        { status: 429 }
+      );
+    }
+
     const body: unknown = await req.json();
 
     const validation = validateContactFormPayload(body);
@@ -75,8 +63,6 @@ export async function POST(req: Request) {
         pass: process.env.NODEMAILER_AUTH_PASS,
       },
     });
-
-    await transporter.verify();
 
     const safeName = escapeHtml(name);
     const safeEmail = escapeHtml(email);

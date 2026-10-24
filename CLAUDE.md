@@ -23,7 +23,7 @@
 
 * The repo is private and these files hold no secret values; this split is about hygiene, not secrets.
 * `CLAUDE.md` — shared on the remote (tracked). Version-controlled project config; keep it in sync across machines via git.
-* `todo.md` — shared on the remote (tracked). Worked on from two devices + the server, so it MUST stay synced via git.
+* `ToDo.md` — shared on the remote (tracked). Worked on from two devices + the server, so it MUST stay synced via git.
 * `SESSION_CONTEXT.md` — local only; gitignored, never committed. It maps infra and records operational/incident notes that should not travel with the repo.
 
 ## Blog conventions

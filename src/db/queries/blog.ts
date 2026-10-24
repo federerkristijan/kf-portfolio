@@ -1,3 +1,4 @@
+import { cache } from "react";
 import pool from "@/lib/db";
 import { slugify } from "@/lib/slugify";
 
@@ -23,26 +24,30 @@ export type BlogPost = {
   updated_at: string;
 };
 
+// Drafts (published_at NULL) and scheduled posts stay hidden.
+const PUBLISHED = "published_at IS NOT NULL AND published_at <= NOW()";
+
 export async function getPosts(): Promise<BlogPost[]> {
   const { rows } = await pool.query<BlogPost>(
-    "SELECT * FROM blog ORDER BY published_at DESC"
+    `SELECT * FROM blog WHERE ${PUBLISHED} ORDER BY published_at DESC`
   );
   return rows;
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const { rows } = await pool.query<BlogPost>(
-    "SELECT * FROM blog WHERE slug = $1 LIMIT 1",
+    `SELECT * FROM blog WHERE slug = $1 AND ${PUBLISHED} LIMIT 1`,
     [slug]
   );
   return rows[0] ?? null;
 }
 
 // Tags are free text without their own slug column, so matching goes through
-// slugify — the same function that builds the tag links.
-export async function getPostsByTag(
+// slugify — the same function that builds the tag links. Cached per request,
+// since the tag page calls it from both generateMetadata and the page.
+export const getPostsByTag = cache(async (
   tagSlug: string
-): Promise<{ tag: string; posts: BlogPost[] } | null> {
+): Promise<{ tag: string; posts: BlogPost[] } | null> => {
   const posts = (await getPosts()).filter((post) =>
     post.tags?.some((tag) => slugify(tag) === tagSlug)
   );
@@ -50,4 +55,4 @@ export async function getPostsByTag(
 
   const tag = posts[0].tags!.find((t) => slugify(t) === tagSlug)!;
   return { tag, posts };
-}
+});

@@ -45,6 +45,20 @@ test("every tag page lists only posts carrying that tag", async ({ page }) => {
   }
 });
 
+test("cover images load through next/image", async ({ page }) => {
+  await page.goto("/blog");
+  const covers = page.locator("article img");
+  expect(await covers.count()).toBeGreaterThan(0);
+
+  for (const img of await covers.all()) {
+    await img.scrollIntoViewIfNeeded();
+    await expect(img).toHaveAttribute("src", /^\/_next\/image\?/);
+    await expect
+      .poll(() => img.evaluate((el) => (el as HTMLImageElement).naturalWidth))
+      .toBeGreaterThan(0);
+  }
+});
+
 test("unknown tag returns 404", async ({ page }) => {
   const res = await page.goto("/blog/tag/does-not-exist-xyz");
   expect(res?.status()).toBe(404);
