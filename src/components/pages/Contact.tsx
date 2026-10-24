@@ -30,12 +30,17 @@ export default function Contact() {
 
       if (!response.ok) {
         const data = await response.json().catch(() => null);
-        throw new Error(data?.error ?? "Failed to send message");
+        setStatus({
+          loading: false,
+          error: data?.error ?? "Failed to send message. Please try again.",
+          success: false,
+        });
+        return;
       }
 
       setStatus({ loading: false, error: "", success: true });
       setFormData({ name: "", email: "", message: "", website: "" });
-    } catch (error) {
+    } catch {
       setStatus({
         loading: false,
         error: "Failed to send message. Please try again.",
@@ -124,7 +129,7 @@ export default function Contact() {
         <button
           type="submit"
           disabled={status.loading}
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          className="w-full text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
         >
           {status.loading ? "Sending..." : "Send Message"}
         </button>
