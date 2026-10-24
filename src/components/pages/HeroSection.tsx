@@ -23,7 +23,7 @@ export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
     const name4 = "erer";
 
     return (
-      <div className="name-wrapper relative flex items-end gap-8 sm:flex-row flex-col">
+      <div className="name-wrapper relative flex items-center sm:items-end gap-8 sm:flex-row flex-col">
         <span className="text-4xl sm:text-5xl md:text-6xl font-bold">
           {name1}
         </span>

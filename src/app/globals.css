@@ -126,10 +126,9 @@ article li {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
   background-color: black;
   width: 100%;
-  height: 5vh;
+  height: 5rem;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -441,7 +440,7 @@ button {
 
 /* Media Queries */
 @media (max-width: 640px) {
-  .moustache-d {
+  .moustache-d .moustache {
     display: none;
   }
 
