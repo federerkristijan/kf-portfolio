@@ -5,17 +5,9 @@ import Image from "next/image";
 import Foto from "@/assets/CV Foto Glasses 1 - Edited 1.png";
 import { Button } from "@/components/ui/Button";
 import Moustache from "@/assets/moustache.png";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
-export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
+export const HeroSection = ({ subtitle }: HeroSectionPayload) => {
   const renderHeaderName = () => {
     const name1 = "Kristijan";
     const name2 = "Fe";
@@ -33,35 +25,33 @@ export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
             {name2}
           </span>
           <div className="moustache-d relative flex flex-col items-center">
-            {isMounted && (
-              <motion.div
-                animate={{
-                  y: [-5, 0, -5],
-                  rotate: [-5, 0, 5, 0, -5],
-                }}
-                transition={{
-                  y: {
-                    duration: 2,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                  },
-                  rotate: {
-                    duration: 3,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                  },
-                }}
-              >
-                <Image
-                  src={Moustache}
-                  alt="Moustache Animation"
-                  width={80}
-                  height={70}
-                  className="moustache object-contain sm:w-10 sm:h-5 relative left-2"
-                  priority
-                />
-              </motion.div>
-            )}
+            <motion.div
+              animate={{
+                y: [-5, 0, -5],
+                rotate: [-5, 0, 5, 0, -5],
+              }}
+              transition={{
+                y: {
+                  duration: 2,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                },
+                rotate: {
+                  duration: 3,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                },
+              }}
+            >
+              <Image
+                src={Moustache}
+                alt="Moustache Animation"
+                width={80}
+                height={70}
+                className="moustache object-contain sm:w-10 sm:h-5 relative left-2"
+                priority
+              />
+            </motion.div>
             <span className="relative z-10 text-4xl sm:text-5xl md:text-6xl font-bold">
               {name3}
             </span>
