@@ -8,27 +8,13 @@ import Moustache from "@/assets/moustache.png";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import MobileHeroSection from "./MobileHeroSection";
 
 export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  if (isMobile) {
-    return <MobileHeroSection title={title} subtitle={subtitle} />;
-  }
 
   const renderHeaderName = () => {
     const name1 = "Kristijan";
@@ -101,7 +87,7 @@ export const HeroSection = ({ title, subtitle, image }: HeroSectionPayload) => {
           <Button href="/about">Get in touch</Button>
         </div>
       </div>
-      <div className="mt-8 lg:mt-0 lg:ml-8 hidden md:block w-full lg:w-1/2">
+      <div className="mt-8 lg:mt-0 lg:ml-8 w-full lg:w-1/2">
         <Image
           src={Foto}
           alt="Kristijan Federer"
