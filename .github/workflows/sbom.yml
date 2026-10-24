@@ -27,7 +27,8 @@ jobs:
           output-file: sbom.cdx.json
 
       - name: Install grype
-        run: curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+        # Script pinned to the v0.121.0 release commit; the script verifies binary checksums.
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/grype/afe2742527d98d822da06c9f32eed86fe3d193e0/install.sh | sh -s -- -b /usr/local/bin v0.121.0
 
       - name: Scan for vulnerabilities (table log)
         run: grype sbom:sbom.cdx.json --by-cve --fail-on high -o table
@@ -37,7 +38,8 @@ jobs:
         if: always()
 
       - name: Install grant
-        run: curl -sSfL https://raw.githubusercontent.com/anchore/grant/main/install.sh | sh -s -- -b /usr/local/bin
+        # Script pinned to the v0.6.8 release commit; the script verifies binary checksums.
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/grant/0fb3c502202139efcf4a20aa72014cf6eafab930/install.sh | sh -s -- -b /usr/local/bin v0.6.8
 
       - name: License report
         run: grant list sbom.cdx.json -f=grant.json -v
