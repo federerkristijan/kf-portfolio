@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -57,11 +58,16 @@ export default async function BlogPostPage({ params }: Props) {
     <div className="container mx-auto px-4 py-12 max-w-6xl">
       {post.cover_image_url && (
         <figure className="mb-8">
-          <img
-            src={post.cover_image_url}
-            alt={post.title}
-            className="w-full h-auto rounded-xl"
-          />
+          <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+            <Image
+              src={post.cover_image_url}
+              alt={post.title}
+              fill
+              priority
+              sizes="(max-width: 72rem) 100vw, 72rem"
+              className="object-cover"
+            />
+          </div>
           {post.cover_image_caption && (
             <figcaption className="mt-3 text-sm text-gray-500 italic text-center">
               {post.cover_image_caption}
