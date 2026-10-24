@@ -11,33 +11,39 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
+// h2/h3 lines outside fenced code blocks, with ids made unique ("intro",
+// "intro-2", ...) so repeated heading text still gets its own anchor.
 function extractHeadings(content: string) {
-  return content
-    .split('\n')
-    .filter((line) => /^#{2,3} /.test(line))
-    .map((line) => {
-      const level = line.startsWith('### ') ? 3 : 2;
-      const text = line.replace(/^#{2,3} /, '');
-      return { level, text, id: slugify(text) };
-    });
+  const seen = new Map<string, number>();
+  let inFence = false;
+  const headings: { level: number; text: string; id: string }[] = [];
+
+  for (const line of content.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) inFence = !inFence;
+    if (inFence || !/^#{2,3} /.test(line)) continue;
+
+    const level = line.startsWith('### ') ? 3 : 2;
+    const text = line.replace(/^#{2,3} /, '');
+    const base = slugify(text);
+    const count = (seen.get(base) ?? 0) + 1;
+    seen.set(base, count);
+    headings.push({ level, text, id: count > 1 ? `${base}-${count}` : base });
+  }
+  return headings;
 }
 
-function nodeText(node: React.ReactNode): string {
-  if (typeof node === 'string' || typeof node === 'number') return String(node);
-  if (Array.isArray(node)) return node.map(nodeText).join('');
-  if (node && typeof node === 'object' && 'props' in (node as object))
-    return nodeText((node as React.ReactElement).props.children);
-  return '';
+// Markdown renders headings in document order, so the nth h2/h3 gets the nth id.
+function headingComponents(ids: string[]) {
+  let index = 0;
+  return {
+    h2: ({ children }: { children?: React.ReactNode }) => (
+      <h2 id={ids[index++]}>{children}</h2>
+    ),
+    h3: ({ children }: { children?: React.ReactNode }) => (
+      <h3 id={ids[index++]}>{children}</h3>
+    ),
+  };
 }
-
-const headingComponents = {
-  h2: ({ children }: { children?: React.ReactNode }) => (
-    <h2 id={slugify(nodeText(children))}>{children}</h2>
-  ),
-  h3: ({ children }: { children?: React.ReactNode }) => (
-    <h3 id={slugify(nodeText(children))}>{children}</h3>
-  ),
-};
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
@@ -85,13 +91,15 @@ export default async function BlogPostPage({ params }: Props) {
         {post.published_at && (
           <span>{new Date(post.published_at).toLocaleDateString('en-GB')}</span>
         )}
-        {post.reading_time_minutes && (
+        {!!post.reading_time_minutes && (
           <span>{post.reading_time_minutes} min read</span>
         )}
       </div>
       <div className="flex gap-12">
         <article className="prose prose-invert max-w-none flex-1 min-w-0">
-          <ReactMarkdown components={headingComponents}>{post.content}</ReactMarkdown>
+          <ReactMarkdown components={headingComponents(headings.map((h) => h.id))}>
+            {post.content}
+          </ReactMarkdown>
         </article>
         <TableOfContents headings={headings} />
       </div>

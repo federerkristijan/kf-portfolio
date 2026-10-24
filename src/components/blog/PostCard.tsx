@@ -14,6 +14,8 @@ export const PostCard = ({ post }: Props) => {
             <img
               src={post.cover_image_url}
               alt={post.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
           </div>
@@ -34,7 +36,7 @@ export const PostCard = ({ post }: Props) => {
             {post.published_at && (
               <span>{new Date(post.published_at).toLocaleDateString('en-GB')}</span>
             )}
-            {post.reading_time_minutes && (
+            {!!post.reading_time_minutes && (
               <span>{post.reading_time_minutes} min read</span>
             )}
           </div>
